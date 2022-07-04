@@ -1,5 +1,6 @@
 #include "sensorsADT.h"
 #define QUERIES 3
+#define MAX_LEN 256
 void close(FILE * files[], size_t cant);
 
 int main(int argc, char *argv[]){
