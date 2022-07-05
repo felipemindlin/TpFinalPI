@@ -5,8 +5,7 @@
 
 #define DELIM ";"
 #define ZERO 2009
-#define IDS 86
+#define IDS 85
 #define DAYS 7
 
 typedef struct sensorsCDT * sensorsADT;
-
