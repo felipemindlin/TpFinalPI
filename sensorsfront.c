@@ -45,10 +45,25 @@ int main(int argc, char *argv[]){
     fputs("year;counts\n", query2);
     fputs("day;day_counts;night_counts;total_counts\n", query3);
     fputs("sensor;max_counts;hour;date\n", query4);
-    
-
-
-
+    int i=0;
+    //Llamar a funcion que ordena
+    while(i<IDS){
+        id aux=data->ids[i];
+        fprintf(query1,"%s;%d\n", aux.name, aux.total);
+        i++;
+    }
+    for(i=data->dim; i>=0; i--){
+        fprintf(query2, "%d;%d\n", i+ZERO, data->years[i]);
+    }
+    for(i=0; i<DAYS; i++){
+        day aux=data->days[i];
+        fprintf(query3, "%s;%d;%d;%d\n", aux.name, aux.day, aux.night, aux.total);
+    }
+    //Llamar a funcion que ordena vol 2
+    for(i=0; i<IDS; i++){
+        id aux=data->ids[i];
+        fprintf(query3, "%s;%d;%d;%d/%d/%d\n",aux.name, aux.cant_max, aux.hour, aux.day, aux.month, aux.year);
+    }
     free(currentLine);
     fclose(query1);
     fclose(query2);
@@ -60,3 +75,5 @@ void memory(){
     fprintf(stderr, "ERROR: memoria insuficiente\n");
     exit(1);
 }
+
+int compare()

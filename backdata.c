@@ -1,44 +1,83 @@
 #include "sensorsADT.h"
 
+enum days{Mon = 0, Tue, Wed, Thur, Fri, Sat, Sun};
+enum months{Jan = 1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
+
 // Year;Month;Mdate;Day;Sensor_ID;Time;Hourly_Counts
-int days(char * token);
+int days(char * token); // convierte los dias de la semana a numeros del 0 al 6
+
+int months(char * token); // convierte los meses a numeros del 1 al 12
+
+int isActive(sensorsADT data, int id);  // devuelve 1 si el sensor esta activo o 0 si esta inactivo
+
 
 void addReading(sensorsADT data, char * string){
     char * token;
 
     token = strtok(string, DELIM); 
-    int year = atoi(token);// año
+    int year = atoi(token); // year
 
     token = strtok(NULL, DELIM); 
-    char * month = token; // mes //hacer funcion que cambie a numero
+    char * month = token;
+    int numMonth = months(token); // month
 
     token = strtok(NULL, DELIM); 
     int day = atoi(token); // mDate
 
     token = strtok(NULL, DELIM); 
-    int weekDay = days(token); // Day 
+    char * nameday = token; //guardamos el nombre del dia
+    int weekDay = days(token); // el dia como numero del 0 al 6
 
     token = strtok(NULL, DELIM); // sensor_id
-    int sensor = atoi(token);
+    int id = atoi(token);
     
     token = strtok(NULL, DELIM); 
     int time = atoi(token); // time
 
     token = strtok(NULL, DELIM); 
     int hCounts = atoi(token); // hourly_counts 
-
+    
+    int flag = isActive(data, id);
     //FALTA LLAMAR A LAS FUNCIONES QUE AGREGUEN LA INFO AL TAD
+    
+    
 }
+
 int days(char * token){
     int n=2; // comparamos los primeros dos caracteres para ver que dia de la semana es 
-    if(strncmp(token, "Mo", n)==0) return 0;
-    if(strncmp(token, "Tu", n)==0) return 1;
-    if(strncmp(token, "We", n)==0) return 2;
-    if(strncmp(token, "Th", n)==0) return 3;
-    if(strncmp(token, "Fr", n)==0) return 4;
-    if(strncmp(token, "Sa", n)==0) return 5;
-    if(strncmp(token, "Su", n)==0) return 6;
+    if(strncmp(token, "Mo", n)==0) return Mon;
+    if(strncmp(token, "Tu", n)==0) return Tue;
+    if(strncmp(token, "We", n)==0) return Wed;
+    if(strncmp(token, "Th", n)==0) return Thur;
+    if(strncmp(token, "Fr", n)==0) return Fri;
+    if(strncmp(token, "Sa", n)==0) return Sat;
+    if(strncmp(token, "Su", n)==0) return Sun;
+    return -1;
 }
+
+int months(char * token){
+   int n = 3; //para comparar primeros 3 caracteres del mes (diferenciar march-may, june-july)
+   if(strncmp(token, "Jan", n)==0) return Jan;
+   if(strncmp(token, "Feb", n)==0) return Feb;
+   if(strncmp(token, "Mar", n)==0) return Mar;
+   if(strncmp(token, "Apr", n)==0) return Apr;
+   if(strncmp(token, "May", n)==0) return May;
+   if(strncmp(token, "Jun", n)==0) return Jun;
+   if(strncmp(token, "Jul", n)==0) return Jul;
+   if(strncmp(token, "Aug", n)==0) return Aug;
+   if(strncmp(token, "Sep", n)==0) return Sep;
+   if(strncmp(token, "Oct", n)==0) return Oct;
+   if(strncmp(token, "Nov", n)==0) return Nov;
+   if(strncmp(token, "Dec", n)==0) return Dec;
+   return -1;
+}   
+
+int isActive(sensorsADT data, int id){
+    if(data->ids[id-1].status == 'A')
+        return 1;
+    return 0;
+}
+
 
     
 
