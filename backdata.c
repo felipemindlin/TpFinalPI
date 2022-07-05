@@ -7,7 +7,7 @@ void newData(sensorsADT sens, char * string){
     char * token;
 
     token = strtok(string, DELIM); 
-    int year = atoi(token);// año
+    int year = atoi(token);// añoo
 
     token = strtok(NULL, DELIM); 
     char * month = token; // mes 
