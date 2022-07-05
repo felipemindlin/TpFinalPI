@@ -4,7 +4,7 @@
 typedef struct id{
     size_t total; // suma total de todas las mediciones del sensor
     char *name; // nombre del sensor
-    char c; // estado del sensor "A", "R",
+    char status; //estado del sensor "A" o "R"
     size_t cant_max; // cantidad maxima para comparar 
     unsigned int hour; //dia con max cant
     unsigned int day; // hora con max cant
@@ -22,5 +22,6 @@ typedef struct SensorsCDT{
     day days[DAYS]; // vector de los dias de la semana.
     id ids[IDS]; // vector de todos los sensores
     size_t * years; // suma total por año
+    size_t dim;
 }SensorsCDT;
 

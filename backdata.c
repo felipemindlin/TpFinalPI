@@ -3,14 +3,14 @@
 // Year;Month;Mdate;Day;Sensor_ID;Time;Hourly_Counts
 int days(char * token);
 
-void addReading(sensorsADT sens, char * string){
+void addReading(sensorsADT data, char * string){
     char * token;
 
     token = strtok(string, DELIM); 
     int year = atoi(token);// año
 
     token = strtok(NULL, DELIM); 
-    char * month = token; // mes 
+    char * month = token; // mes //hacer funcion que cambie a numero
 
     token = strtok(NULL, DELIM); 
     int day = atoi(token); // mDate
@@ -31,13 +31,13 @@ void addReading(sensorsADT sens, char * string){
 }
 int days(char * token){
     int n=2; // comparamos los primeros dos caracteres para ver que dia de la semana es 
-    if(strncmp(token, "Su", n)==0) return 0;
-    if(strncmp(token, "Mo", n)==0) return 1;
-    if(strncmp(token, "Tu", n)==0) return 2;
-    if(strncmp(token, "We", n)==0) return 3;
-    if(strncmp(token, "Th", n)==0) return 4;
-    if(strncmp(token, "Fr", n)==0) return 5;
-    if(strncmp(token, "Sa", n)==0) return 6;
+    if(strncmp(token, "Mo", n)==0) return 0;
+    if(strncmp(token, "Tu", n)==0) return 1;
+    if(strncmp(token, "We", n)==0) return 2;
+    if(strncmp(token, "Th", n)==0) return 3;
+    if(strncmp(token, "Fr", n)==0) return 4;
+    if(strncmp(token, "Sa", n)==0) return 5;
+    if(strncmp(token, "Su", n)==0) return 6;
 }
 
     
