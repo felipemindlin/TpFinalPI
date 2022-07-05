@@ -1,11 +1,21 @@
 #include "sensorsADT.h"
 #define MAX_LEN 64 // reservamos 64 ya que analizando los parametros llegamos a que el maximo son 55 caracaracter rervamos mas por si cambian los id o hay mediciones absurdamente grandes.
 void memory(void);
-
+void wrongyear(void);
 int main(int argc, char *argv[]){
     if( argc < 2 || argc > 4 ) {
         fprintf(stderr, "ERROR: cantidad de argumentos invalida\n");
         exit(1);
+    }
+    if(argc==3){
+        if(check(argv[3])){
+            wrongyear();
+        }
+    }
+    else if(argc==4){
+        if( check(argv[3]) || check(argv[4])){
+           wrongyear();
+        }
     }
     FILE * readings = fopen(argv[1], "r");     // abrimos las mediciones
     FILE * sensors = fopen(argv[2], "r");       // abrimos el archivo csv de los sensores
@@ -13,7 +23,21 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: archivos especificados no encontrados\n");
         exit(1);
     }
-    sensorsADT data = newsensorADT();         // creamos un nuevo ADT y checkeamos de tener memoria
+    if(argc >=3){
+        int min=atoi(argv[3]);
+        
+        if(argc==4){
+            int max=atoi(argv[4]);
+            
+            sensorsADT data = newsensorADT(min, max);
+        }
+        else{
+            sensorsADT data = newsensorADT(min, ACTUAL_YEAR);
+        }
+    }
+    else {
+        sensorsADT data = newsensorADT(MIN_YEAR, ACTUAL_YEAR);         // creamos un nuevo ADT y checkeamos de tener memoria
+    }
     if(data==NULL){
         memory();
     }
@@ -53,14 +77,14 @@ int main(int argc, char *argv[]){
         i++;
     }
     for(i=data->dim; i>=0; i--){
-        fprintf(query2, "%d;%d\n", i+ZERO, data->years[i]);
+        fprintf(query2, "%d;%d\n", i+MIN_YEAR, data->years[i]);
     }
     for(i=0; i<DAYS; i++){
         day aux=data->days[i];
         fprintf(query3, "%s;%d;%d;%d\n", aux.name, aux.day, aux.night, aux.total);
     }
     //Llamar a funcion que ordena vol 2
-    for(i=0; i<IDS; i++){
+    for(i=data->minYear-; i<IDS; i++){
         id aux=data->ids[i];
         fprintf(query3, "%s;%d;%d;%d/%d/%d\n",aux.name, aux.cant_max, aux.hour, aux.day, aux.month, aux.year);
     }
@@ -75,5 +99,8 @@ void memory(){
     fprintf(stderr, "ERROR: memoria insuficiente\n");
     exit(1);
 }
+void wrongyear(void){
+    fprintf(stderr, "ERROR: Paramtros de años invalidos\n");
+    exit(1);
+}
 
-int compare()

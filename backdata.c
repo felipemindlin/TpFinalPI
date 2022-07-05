@@ -10,21 +10,38 @@ int months(char * token); // convierte los meses a numeros del 1 al 12
 
 int isActive(sensorsADT data, int id);  // devuelve 1 si el sensor esta activo o 0 si esta inactivo
 
-
+// 2018 - 2022
 void addReading(sensorsADT data, char * string){
     char * token;
+    int month = -1;
+    int monthDay = -1;
+    int flag = 0;
 
     token = strtok(string, DELIM); 
+    // si el year esta fuera del año podriamos saltear todo lo que viene abajo para ahorrar tiempo @pipe, el tema es que el min y el max va a haber
+    // que tenerlo disponible, lo podemos meter en el tad o hacer como parametro de entrada de la funcion addReading
+
     int year = atoi(token); // year
+    
+
+    if(year >= data->minYear && year <= data->maxYear){
+        flag = 1;
+    }  
 
     token = strtok(NULL, DELIM); 
-    char * month = token;
-    int numMonth = months(token); // month
+    if(flag){
+        month = months(token); // month
+    }
+        
 
     token = strtok(NULL, DELIM); 
-    int day = atoi(token); // mDate
+    if(flag){
+        monthDay = atoi(token); // mDate
+    }
+    
 
     token = strtok(NULL, DELIM); 
+    
     char * nameday = token; //guardamos el nombre del dia
     int weekDay = days(token); // el dia como numero del 0 al 6
 
@@ -39,7 +56,7 @@ void addReading(sensorsADT data, char * string){
     
     int flag = isActive(data, id);
     //FALTA LLAMAR A LAS FUNCIONES QUE AGREGUEN LA INFO AL TAD
-    
+    return newReading(data, year, month, monthDay, nameday, weekDay, id, time, hCounts, &flag);
     
 }
 
@@ -73,12 +90,26 @@ int months(char * token){
 }   
 
 int isActive(sensorsADT data, int id){
-    if(data->ids[id-1].status == 'A')
+    if(data->ids[id-1].status == 'A'){
         return 1;
+    }
     return 0;
 }
 
+int addSensor(sensorsADT data, const char * string){
+    char * token;
 
+    token = strtok(string, DELIM);
+    int id = atoi(token); //obtiene id del sensor
+
+    token = strtok(NULL, DELIM);
+    char *name = token; //guardamos nombre sensor
+
+    token = strtok(NULL, DELIM);
+    char status = token;
+    
+    return newSensor(data, id, name, status);
+}
     
 
 
