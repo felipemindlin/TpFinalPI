@@ -9,3 +9,8 @@
 #define DAYS 7
 #define ACTUAL_YEAR 2022
 typedef struct sensorsCDT * sensorsADT;
+
+
+void orderQ1(sensorsADT data); // funcion que ordena de manera eficiente para devolver en el orden pedidio para el Query 1
+
+void orderQ4(sensorsADT data); // funcion que ordena de manera eficiente para devolver en el orden pedidio para el Query 4

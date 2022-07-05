@@ -8,14 +8,22 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: cantidad de argumentos invalida\n");
         exit(1);
     }
+    int min=MIN_YEAR;
+    int max=ACTUAL_YEAR;
     if(argc==3){
         if(check(argv[3])){
             wrongyear();
         }
+        min=atoi(argv[3]);
     }
     else if(argc==4){
         if( check(argv[3]) || check(argv[4])){
            wrongyear();
+        }
+        min=atoi(argv[3]);
+        max=atoi(argv[4]);
+        if(min>max){
+            wrongyear();
         }
     }
     FILE * readings = fopen(argv[1], "r");     // abrimos las mediciones
@@ -24,21 +32,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: archivos especificados no encontrados\n");
         exit(1);
     }
-    if(argc >=3){
-        int min=atoi(argv[3]);
-        
-        if(argc==4){
-            int max=atoi(argv[4]);
-            
-            sensorsADT data = newsensorADT(min, max);
-        }
-        else{
-            sensorsADT data = newsensorADT(min, ACTUAL_YEAR);
-        }
-    }
-    else {
-        sensorsADT data = newsensorADT(MIN_YEAR, ACTUAL_YEAR);         // creamos un nuevo ADT y checkeamos de tener memoria
-    }
+    sensorsADT data = newsensorADT(min, max);         // creamos un nuevo ADT y checkeamos de tener memoria
     if(data==NULL){
         memory();
     }
@@ -71,7 +65,7 @@ int main(int argc, char *argv[]){
     fputs("day;day_counts;night_counts;total_counts\n", query3);
     fputs("sensor;max_counts;hour;date\n", query4);
     int i=0;
-    //Llamar a funcion que ordena
+    orderQ1(data);
     while(i<IDS){
         id aux=data->ids[i];
         fprintf(query1,"%s;%d\n", aux.name, aux.total);
@@ -84,7 +78,7 @@ int main(int argc, char *argv[]){
         day aux=data->days[i];
         fprintf(query3, "%s;%d;%d;%d\n", aux.name, aux.day, aux.night, aux.total);
     }
-    //Llamar a funcion que ordena vol 2
+    orderQ4(data);
     for(i=data->minYear-MIN_YEAR; i<data->maxYear-MIN_YEAR; i++){
         id aux=data->ids[i];
         fprintf(query3, "%s;%d;%d;%d/%d/%d\n",aux.name, aux.cant_max, aux.hour, aux.day, aux.month, aux.year);

@@ -10,7 +10,7 @@ int months(char * token); // convierte los meses a numeros del 1 al 12
 
 int isActive(sensorsADT data, int id);  // devuelve 1 si el sensor esta activo o 0 si esta inactivo
 
-// 2018 - 2022
+
 void addReading(sensorsADT data, char * string){
     char * token;
     int month = -1;
@@ -51,9 +51,9 @@ void addReading(sensorsADT data, char * string){
     token = strtok(NULL, DELIM); 
     int hCounts = atoi(token); // hourly_counts 
     
-    int flag = isActive(data, id);
+    int status = isActive(data, id);
     //FALTA LLAMAR A LAS FUNCIONES QUE AGREGUEN LA INFO AL TAD
-    return newReading(data, year, month, monthDay, nameday, weekDay, id, time, hCounts, &flag);
+    return newReading(data, year, month, monthDay, nameday, weekDay, id, time, hCounts, &status);
     
 }
 
