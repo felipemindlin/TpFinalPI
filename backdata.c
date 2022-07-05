@@ -7,7 +7,7 @@ void newData(sensorsADT sens, char * string){
     char * token;
 
     token = strtok(string, DELIM); 
-    int year = atoi(token);// añoo
+    int year = atoi(token);// año
 
     token = strtok(NULL, DELIM); 
     char * month = token; // mes 
@@ -25,18 +25,19 @@ void newData(sensorsADT sens, char * string){
     int time = atoi(token); // time
 
     token = strtok(NULL, DELIM); 
-    int hCounts = atoi(token); // hourly_counts (no se que es)
+    int hCounts = atoi(token); // hourly_counts 
 
     //FALTA LLAMAR A LAS FUNCIONES QUE AGREGUEN LA INFO AL TAD
 }
 int days(char * token){
-    if(strncmp(token, "Mo")==0) return 0;
-    if(strncmp(token, "Tu")==0) return 1;
-    if(strncmp(token, "We")==0) return 2;
-    if(strncmp(token, "Th")==0) return 3;
-    if(strncmp(token, "Fr")==0) return 4;
-    if(strncmp(token, "Sa")==0) return 5;
-    if(strncmp(token, "Su")==0) return 6;
+    int n=2; // comparamos los primeros dos caracteres para ver que dia de la semana es 
+    if(strncmp(token, "Su", n)==0) return 0;
+    if(strncmp(token, "Mo", n)==0) return 1;
+    if(strncmp(token, "Tu", n)==0) return 2;
+    if(strncmp(token, "We", n)==0) return 3;
+    if(strncmp(token, "Th", n)==0) return 4;
+    if(strncmp(token, "Fr", n)==0) return 5;
+    if(strncmp(token, "Sa", n)==0) return 6;
 }
 
     
