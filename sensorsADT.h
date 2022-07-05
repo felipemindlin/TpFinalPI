@@ -9,4 +9,3 @@
 #define DAYS 7
 
 typedef struct sensorsCDT * sensorsADT;
-
