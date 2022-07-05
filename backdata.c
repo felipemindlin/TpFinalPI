@@ -3,7 +3,7 @@
 // Year;Month;Mdate;Day;Sensor_ID;Time;Hourly_Counts
 int days(char * token);
 
-void newData(sensorsADT sens, char * string){
+void addReading(sensorsADT sens, char * string){
     char * token;
 
     token = strtok(string, DELIM); 
