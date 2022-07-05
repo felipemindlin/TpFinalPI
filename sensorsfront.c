@@ -20,13 +20,13 @@ int main(int argc, char *argv[]){
     char * currentLine=malloc(MAX_LEN); 
     fgets(currentLine, MAX_LEN, sensors); // salteo el encabezado
     while(fgets(currentLine, MAX_LEN, sensors)){ //recorro todas las lineas 
-        if(addSensor(sensors, currentLine)){
+        if(addSensor(data, currentLine)){
             memory();
         }
     }
     fgets(currentLine, MAX_LEN, readings); // salteo el encabezado
     while(fgets(currentLine, MAX_LEN, readings)){
-        if(addReading(readings, currentLine)){
+        if(addReading(data, currentLine)){
             memory();
         }
     }
