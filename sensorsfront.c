@@ -17,6 +17,7 @@ int main(int argc, char *argv[]){
     if(data==NULL){
         memory();
     }
+    
     char * currentLine=malloc(MAX_LEN); 
     fgets(currentLine, MAX_LEN, sensors); // salteo el encabezado
     while(fgets(currentLine, MAX_LEN, sensors)){ //recorro todas las lineas 
