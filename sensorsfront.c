@@ -33,10 +33,10 @@ int main(int argc, char *argv[]){
     fclose(readings);
     fclose(sensors);
 
-    FILE * query1= fopen("query1.csv", "wt"); // creamos los archivos donde vamos a guardar lo que pide cada query
-    FILE * query2= fopen("query2.csv", "wt"); 
-    FILE * query3= fopen("query3.csv", "wt");
-    FILE * query4= fopen("query4.csv", "wt");
+    FILE * query1= fopen("query1.csv", "w+"); // creamos los archivos donde vamos a guardar lo que pide cada query
+    FILE * query2= fopen("query2.csv", "w+"); 
+    FILE * query3= fopen("query3.csv", "w+");
+    FILE * query4= fopen("query4.csv", "w+");
     if(query1==NULL || query2==NULL || query3==NULL || query4==NULL){
         fprintf(stderr, "ERROR: Fallo en la creacion/escritura de archivos\n");
         exit(1);
