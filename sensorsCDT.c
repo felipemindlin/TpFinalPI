@@ -4,7 +4,7 @@
 typedef struct id{
     size_t total; // suma total de todas las mediciones del sensor
     char *name; // nombre del sensor
-    char c; // estado del sensor "A", "R",
+    char status; // estado del sensor "A", "R",
     size_t cant_max; // cantidad maxima para comparar 
     unsigned int hour; //dia con max cant
     unsigned int day; // hora con max cant
