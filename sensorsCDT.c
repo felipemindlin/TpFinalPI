@@ -23,17 +23,19 @@ typedef struct sensorsCDT{
     day days[DAYS]; // vector de los dias de la semana.
     id ids[IDS]; // vector de todos los sensores
     size_t years[ACTUAL_YEAR-MIN_YEAR]; // suma total por año
-    size_t minYear; //cant de años      // preguntar a Pipe si en vez de tener un dim, guardamos el max y min de los years.
+    size_t minYear; 
     size_t maxYear;
 }sensorsCDT;
 
 
-sensorsADT newSensorsADT(){
-    return calloc(1, sizeof(sensorsCDT));
+sensorsADT newSensorsADT(size_t minYear, size_t maxYear){
+    sensorsADT new=calloc(1, sizeof(sensorsCDT));
+    new->minYear=minYear;
+    new->maxYear=maxYear;
+    return new;
 }
-// ./pedestrians data1 data2 año1 año2
 
-int compare(int id1, char * sens1, int id2, char * sens2); // devuelve 1 si el id1 tiene que ir antes cuando lo ordenas o -1 si deberia ir el id2 antes
+static int compareTotalPeople(id sens1, id sens2); // devuelve 1 si el id1 tiene que ir antes cuando lo ordenas o -1 si deberia ir el id2 antes
 
 
 int newReading(sensorsADT data, int year, int numMonth, int day, char * nameday, int weekDay, int id, int time, int hCounts, int * flag){

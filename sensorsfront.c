@@ -2,6 +2,7 @@
 #define MAX_LEN 64 // reservamos 64 ya que analizando los parametros llegamos a que el maximo son 55 caracaracter rervamos mas por si cambian los id o hay mediciones absurdamente grandes.
 void memory(void);
 void wrongyear(void);
+int check(char *s);
 int main(int argc, char *argv[]){
     if( argc < 2 || argc > 4 ) {
         fprintf(stderr, "ERROR: cantidad de argumentos invalida\n");
@@ -84,7 +85,7 @@ int main(int argc, char *argv[]){
         fprintf(query3, "%s;%d;%d;%d\n", aux.name, aux.day, aux.night, aux.total);
     }
     //Llamar a funcion que ordena vol 2
-    for(i=data->minYear-; i<IDS; i++){
+    for(i=data->minYear-MIN_YEAR; i<data->maxYear-MIN_YEAR; i++){
         id aux=data->ids[i];
         fprintf(query3, "%s;%d;%d;%d/%d/%d\n",aux.name, aux.cant_max, aux.hour, aux.day, aux.month, aux.year);
     }
@@ -102,5 +103,14 @@ void memory(){
 void wrongyear(void){
     fprintf(stderr, "ERROR: Paramtros de años invalidos\n");
     exit(1);
+}
+
+int check (char * s){
+    for(int i=0; s[i]; i++){
+         if(!isdigit(s[i])){
+            return 1;
+        }
+    }
+    return 0;
 }
 

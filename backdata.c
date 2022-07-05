@@ -18,9 +18,6 @@ void addReading(sensorsADT data, char * string){
     int flag = 0;
 
     token = strtok(string, DELIM); 
-    // si el year esta fuera del año podriamos saltear todo lo que viene abajo para ahorrar tiempo @pipe, el tema es que el min y el max va a haber
-    // que tenerlo disponible, lo podemos meter en el tad o hacer como parametro de entrada de la funcion addReading
-
     int year = atoi(token); // year
     
 
