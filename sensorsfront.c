@@ -4,19 +4,19 @@ void memory(void);
 void wrongyear(void);
 int check(char *s);
 int main(int argc, char *argv[]){
-    if( argc < 3 || argc > 5 ) {
+    if( argc < 2 || argc > 5 ) {
         fprintf(stderr, "ERROR: cantidad de argumentos invalida\n");
         exit(1);
     }
     int min=MIN_YEAR;
     int max=ACTUAL_YEAR;
-    if(argc==4){
+    if(argc==3){
         if(check(argv[3])){
             wrongyear();
         }
         min=atoi(argv[3]);
     }
-    else if(argc==5){
+    else if(argc==4){
         if( check(argv[3]) || check(argv[4])){
            wrongyear();
         }
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
     fputs("day;day_counts;night_counts;total_counts\n", query3);
     fputs("sensor;max_counts;hour;date\n", query4);
     int i=0;
-    orderQ1(data);
+    // orderQ1(data);
     while(i<IDS){
         fprintf(query1,"%s;%ld\n", getName(data, i), getTotal(data, i)); //getName, getTotal
         i++;
@@ -76,9 +76,9 @@ int main(int argc, char *argv[]){
     for(i=0; i<DAYS; i++){
         fprintf(query3, "%s;%ld;%ld;%ld\n", getDayName(data, i), getDataDay(data, i), getDataNight(data, i), getDataTotal(data, i)); //getDayName, getDataDay, getDataNight, getDataTotal 
     }
-    orderQ4(data);
+    // orderQ4(data);
     for(i=min-MIN_YEAR; i<max-MIN_YEAR; i++){
-        fprintf(query3, "%s;%ld;%d;%d/%d/%d\n",getName(data, i), getMax(data, i), getHour(data, i), getDay(data, i), getMonth(data, i), getYear(data, i)); // getMax, getHour, getDay, getMonth, getYear
+        fprintf(query4, "%s;%ld;%d;%d/%d/%d\n",getName(data, i), getMax(data, i), getHour(data, i), getDay(data, i), getMonth(data, i), getYear(data, i)); // getMax, getHour, getDay, getMonth, getYear
     }
     free(currentLine);
     freeALL(data);
@@ -86,6 +86,7 @@ int main(int argc, char *argv[]){
     fclose(query2);
     fclose(query3);
     fclose(query4);
+    return 0;
 }
 
 void memory(){
