@@ -44,8 +44,9 @@ void newyear(sensorsADT data, int year, int hCounts){
 
 int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay){
     day * aux = &data->days[weekDay];
-    aux->name = strcpy(malloc(strlen(nameday) + 1), nameday);
-    aux->name=nameday;
+    if(aux->name==NULL){
+        aux->name = strcpy(malloc(strlen(nameday) + 1), nameday);
+    }
     if (aux->name == NULL){
         return 1; //no pudo guardar en memoria, 1 para que tire error
     }
@@ -76,10 +77,9 @@ void newID(sensorsADT data, int num_id, int hCounts, int year, int month, int mo
      
      if(year >= data->minYear && year <= data->maxYear){
         if(aux.cant_max <= hCounts){
-            //if() definir si al ser iguales tomo otro criterio o no
             aux.cant_max = hCounts;
             aux.year = year;
-            aux.year = month;
+            aux.month = month;
             aux.day = monthDay;
             aux.hour = time;
         }
@@ -124,9 +124,7 @@ void freeALL(sensorsADT data){
         free(data->ids[i].name);
     }
     for(int i=0; i<DAYS; i++){
-        if(data->days[i].name!=NULL){
-            free(data->days[i].name);
-        }
+         free(data->days[i].name);
     }
     free(data);
 }

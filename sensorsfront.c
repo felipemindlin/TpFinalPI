@@ -1,6 +1,6 @@
 #include "sensorsADT.h"
 #define MAX_LEN 64 // reservamos 64 ya que analizando los parametros llegamos a que el maximo son 55 caracaracter rervamos mas por si cambian los id o hay mediciones absurdamente grandes.
-void memory(void);
+void memory();
 void wrongyear(void);
 int check(char *s);
 int main(int argc, char *argv[]){
