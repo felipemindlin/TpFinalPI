@@ -128,3 +128,57 @@ void freeALL(sensorsADT data){
     }
     free(data);
 }
+
+ int isActive(sensorsADT data, int id){
+    if(data->ids[id-1].status == 'A'){
+        return 1;
+    }
+    return 0;
+}
+
+char * getName(sensorsADT data, int idx){
+    return data->ids[idx].name;
+}
+size_t getTotal(sensorsADT data, int idx){
+    return data->ids[idx].total;
+}
+
+size_t getDataByYear(sensorsADT data, int idx){
+    return data->years[idx];
+}
+
+char * getDayName(sensorsADT data, int idx){
+    return data->days[idx].name;
+} 
+
+size_t getDataDay(sensorsADT data, int idx){
+    return data->days[idx].day;
+}
+
+size_t getDataNight(sensorsADT data, int idx){
+    return data->days[idx].night;
+}
+
+size_t getDataTotal(sensorsADT data, int idx){
+    return data->days[idx].total;
+} 
+
+size_t getMax(sensorsADT data, int idx){
+    return data->ids[idx].cant_max;
+}
+
+int getHour(sensorsADT data, int idx){
+   return data->ids[idx].hour;
+}
+
+int getDay(sensorsADT data, int idx){
+    return data->ids[idx].day;
+}
+
+int getMonth(sensorsADT data, int idx){
+    return data->ids[idx].month;
+}
+
+int getYear(sensorsADT data, int idx){
+    return data->ids[idx].year;
+}

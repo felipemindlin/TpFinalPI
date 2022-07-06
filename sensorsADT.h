@@ -29,9 +29,37 @@ int newReading(sensorsADT data, int year, int numMonth, int monthDay, char * nam
 void newID(sensorsADT data, int num_id, int hCounts, int year, int month, int monthDay, int time);
 
 int newSensor(sensorsADT data, size_t id, char * name, char status);
-
+int isActive(sensorsADT data, int id);  // devuelve 1 si el sensor esta activo o 0 si esta inactivo
 
 void orderQ1(sensorsADT data);
 void orderQ4(sensorsADT data);
 
 void freeALL(sensorsADT data);
+
+int addSensor(sensorsADT data, char * string);
+
+int addReading(sensorsADT data, char * string, int min, int max);
+
+
+char * getName(sensorsADT data, int idx);
+size_t getTotal(sensorsADT data, int idx);
+
+size_t getDataByYear(sensorsADT data, int idx);
+
+char * getDayName(sensorsADT data, int idx);
+
+size_t getDataDay(sensorsADT data, int idx);
+
+size_t getDataNight(sensorsADT data, int idx);
+
+size_t getDataTotal(sensorsADT data, int idx);
+
+size_t getMax(sensorsADT data, int idx);
+
+int getHour(sensorsADT data, int idx);
+
+int getDay(sensorsADT data, int idx);
+
+int getMonth(sensorsADT data, int idx);
+
+int getYear(sensorsADT data, int idx);

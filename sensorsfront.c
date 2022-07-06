@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: archivos especificados no encontrados\n");
         exit(1);
     }
-    sensorsADT data = newsensorADT(min, max);         // creamos un nuevo ADT y checkeamos de tener memoria
+    sensorsADT data = newSensorsADT(min, max);         // creamos un nuevo ADT y checkeamos de tener memoria
     if(data==NULL){
         memory();
     }
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
     }
     fgets(currentLine, MAX_LEN, readings); // salteo el encabezado
     while(fgets(currentLine, MAX_LEN, readings)){
-        if(addReading(data, currentLine)){
+        if(addReading(data, currentLine, min, max)){
             memory();
         }
     }
@@ -67,23 +67,21 @@ int main(int argc, char *argv[]){
     int i=0;
     orderQ1(data);
     while(i<IDS){
-        id aux=data->ids[i];
-        fprintf(query1,"%s;%d\n", aux.name, aux.total);
+        fprintf(query1,"%s;%d\n", getName(data, i), getTotal(data, i)); //getName, getTotal
         i++;
     }
-    for(i=data->dim; i>=0; i--){
-        fprintf(query2, "%d;%d\n", i+MIN_YEAR, data->years[i]);
+    for(i=ACTUAL_YEAR-MIN_YEAR; i>=0; i--){
+        fprintf(query2, "%d;%d\n", i+MIN_YEAR, getDataByYear(data, i)); //getDataByYear
     }
     for(i=0; i<DAYS; i++){
-        day aux=data->days[i];
-        fprintf(query3, "%s;%d;%d;%d\n", aux.name, aux.day, aux.night, aux.total);
+        fprintf(query3, "%s;%d;%d;%d\n", getDayName(data, i), getDataDay(data, i), getDataNight(data, i), getDataTotal(data, i)); //getDayName, getDataDay, getDataNight, getDataTotal 
     }
     orderQ4(data);
-    for(i=data->minYear-MIN_YEAR; i<data->maxYear-MIN_YEAR; i++){
-        id aux=data->ids[i];
-        fprintf(query3, "%s;%d;%d;%d/%d/%d\n",aux.name, aux.cant_max, aux.hour, aux.day, aux.month, aux.year);
+    for(i=min-MIN_YEAR; i<max-MIN_YEAR; i++){
+        fprintf(query3, "%s;%d;%d;%d/%d/%d\n",getName(data, i), getMax(data, i), getHour(data, i), getDay(data, i), getMonth(data, i), getYear(data, i)); // getMax, getHour, getDay, getMonth, getYear
     }
     free(currentLine);
+    freeALL(data);
     fclose(query1);
     fclose(query2);
     fclose(query3);

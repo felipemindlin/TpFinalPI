@@ -4,14 +4,13 @@ enum days{Mon = 0, Tue, Wed, Thur, Fri, Sat, Sun};
 enum months{Jan = 1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
 
 // Year;Month;Mdate;Day;Sensor_ID;Time;Hourly_Counts
-int days(char * token); // convierte los dias de la semana a numeros del 0 al 6
+static int days(char * token); // convierte los dias de la semana a numeros del 0 al 6
 
-int months(char * token); // convierte los meses a numeros del 1 al 12
-
-int isActive(sensorsADT data, int id);  // devuelve 1 si el sensor esta activo o 0 si esta inactivo
+static int months(char * token); // convierte los meses a numeros del 1 al 12
 
 
-void addReading(sensorsADT data, char * string){
+
+int addReading(sensorsADT data, char * string, int min, int max){
     char * token;
     int month = -1;
     int monthDay = -1;
@@ -21,7 +20,7 @@ void addReading(sensorsADT data, char * string){
     int year = atoi(token); // year
     
 
-    if(year >= data->minYear && year <= data->maxYear){
+    if(year >= min && year <= max){
         flag = 1;
     }  
 
@@ -57,7 +56,7 @@ void addReading(sensorsADT data, char * string){
     
 }
 
-int days(char * token){
+static int days(char * token){
     int n=2; // comparamos los primeros dos caracteres para ver que dia de la semana es 
     char *weekDay[] = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
     for(int i = 0; i < (sizeof(weekDay)/sizeof(weekDay[0])); i++){
@@ -68,7 +67,7 @@ int days(char * token){
     return -1;
 }
 
-int months(char * token){
+static int months(char * token){
    int n = 3; //para comparar primeros 3 caracteres del mes (diferenciar march-may, june-july)
    char * monthsVec[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
    int i=0; // n letras necesarias para diferenciar los meses
@@ -78,14 +77,9 @@ int months(char * token){
    return i + 1;
 }   
 
-int isActive(sensorsADT data, int id){
-    if(data->ids[id-1].status == 'A'){
-        return 1;
-    }
-    return 0;
-}
 
-int addSensor(sensorsADT data, const char * string){
+
+int addSensor(sensorsADT data, char * string){
     char * token;
 
     token = strtok(string, DELIM);
@@ -95,7 +89,7 @@ int addSensor(sensorsADT data, const char * string){
     char *name = token; //guardamos nombre sensor
 
     token = strtok(NULL, DELIM);
-    char status = token;
+    char status = token[0];
     
     return newSensor(data, id, name, status);
 }
