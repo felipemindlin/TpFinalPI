@@ -87,12 +87,11 @@ void newID(sensorsADT data, int num_id, int hCounts, int year, int month, int mo
 }
 
 int newSensor(sensorsADT data, size_t id, char * name, char status){
-    id aux = data->ids[id-1];
-    aux->name=strcpy(malloc(strlen(name)+1), name);
-    if(aux->name == NULL){
+    data->ids[id-1].name=strcpy(malloc(strlen(name)+1), name);
+    if(data->ids[id-1].name == NULL){
         return 1;
     }
-    aux->status=status;
+    data->ids[id-1].status=status;
     return 0;    
 }
 
@@ -121,10 +120,10 @@ void orderQ4(sensorsADT data){
 
 void freeALL(sensorsADT data){
     for(int i=0; i<IDS; i++){
-        free(data->ids[i]->name);
+        free(data->ids[i].name);
     }
     for(int i=0; i<DAYS; i++){
-        free(data->days[i]->name);
+        free(data->days[i].name);
     }
     free(data);
 }

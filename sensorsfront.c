@@ -67,18 +67,18 @@ int main(int argc, char *argv[]){
     int i=0;
     orderQ1(data);
     while(i<IDS){
-        fprintf(query1,"%s;%d\n", getName(data, i), getTotal(data, i)); //getName, getTotal
+        fprintf(query1,"%s;%ld\n", getName(data, i), getTotal(data, i)); //getName, getTotal
         i++;
     }
     for(i=ACTUAL_YEAR-MIN_YEAR; i>=0; i--){
-        fprintf(query2, "%d;%d\n", i+MIN_YEAR, getDataByYear(data, i)); //getDataByYear
+        fprintf(query2, "%d;%ld\n", i+MIN_YEAR, getDataByYear(data, i)); //getDataByYear
     }
     for(i=0; i<DAYS; i++){
-        fprintf(query3, "%s;%d;%d;%d\n", getDayName(data, i), getDataDay(data, i), getDataNight(data, i), getDataTotal(data, i)); //getDayName, getDataDay, getDataNight, getDataTotal 
+        fprintf(query3, "%s;%ld;%ld;%ld\n", getDayName(data, i), getDataDay(data, i), getDataNight(data, i), getDataTotal(data, i)); //getDayName, getDataDay, getDataNight, getDataTotal 
     }
     orderQ4(data);
     for(i=min-MIN_YEAR; i<max-MIN_YEAR; i++){
-        fprintf(query3, "%s;%d;%d;%d/%d/%d\n",getName(data, i), getMax(data, i), getHour(data, i), getDay(data, i), getMonth(data, i), getYear(data, i)); // getMax, getHour, getDay, getMonth, getYear
+        fprintf(query3, "%s;%ld;%d;%d/%d/%d\n",getName(data, i), getMax(data, i), getHour(data, i), getDay(data, i), getMonth(data, i), getYear(data, i)); // getMax, getHour, getDay, getMonth, getYear
     }
     free(currentLine);
     freeALL(data);
