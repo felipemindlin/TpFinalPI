@@ -43,17 +43,17 @@ void newyear(sensorsADT data, int year, int hCounts){
 }
 
 int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay){
-    day aux = data->days[weekDay];
-    aux.name = strcpy(malloc(strlen(nameday) + 1), nameday);
-    if (aux.name == NULL){
+    day * aux = &data->days[weekDay];
+    aux->name = strcpy(malloc(strlen(nameday) + 1), nameday);
+    if (aux->name == NULL){
         return 1; //no pudo guardar en memoria, 1 para que tire error
     }
     
-    aux.total += hCounts; //siempre sumo al total
+    aux->total += hCounts; //siempre sumo al total
     if( time >= 0 && time <= 6){ //sumo si entra en el rango horario del daycount
-        aux.day += hCounts;
+        aux->day += hCounts;
     } else if( time>=18 && time<24){ //idem pero con nightcount
-        aux.night += hCounts;
+        aux->night += hCounts;
     }
     return 0;
 }
@@ -70,17 +70,17 @@ int newReading(sensorsADT data, int year, int numMonth, int monthDay, char * nam
 }
 
 void newID(sensorsADT data, int num_id, int hCounts, int year, int month, int monthDay, int time){
-     id aux=data->ids[num_id-1];
-     aux.total += hCounts;
+     id *aux=&data->ids[num_id-1];
+     aux->total += hCounts;
      
      if(year >= data->minYear && year <= data->maxYear){
-        if(aux.cant_max <= hCounts){
+        if(aux->cant_max <= hCounts){
             //if() definir si al ser iguales tomo otro criterio o no
-            aux.cant_max = hCounts;
-            aux.year = year;
-            aux.year = month;
-            aux.day = monthDay;
-            aux.hour = time;
+            aux->cant_max = hCounts;
+            aux->year = year;
+            aux->month = month;
+            aux->day = monthDay;
+            aux->hour = time;
         }
     }
     
@@ -181,3 +181,4 @@ int getMonth(sensorsADT data, int idx){
 int getYear(sensorsADT data, int idx){
     return data->ids[idx].year;
 }
+

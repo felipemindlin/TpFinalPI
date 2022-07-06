@@ -4,19 +4,19 @@ void memory(void);
 void wrongyear(void);
 int check(char *s);
 int main(int argc, char *argv[]){
-    if( argc < 2 || argc > 4 ) {
+    if( argc < 3 || argc > 5 ) {
         fprintf(stderr, "ERROR: cantidad de argumentos invalida\n");
         exit(1);
     }
     int min=MIN_YEAR;
     int max=ACTUAL_YEAR;
-    if(argc==3){
+    if(argc==4){
         if(check(argv[3])){
             wrongyear();
         }
         min=atoi(argv[3]);
     }
-    else if(argc==4){
+    else if(argc==5){
         if( check(argv[3]) || check(argv[4])){
            wrongyear();
         }
