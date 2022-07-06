@@ -1,184 +1,109 @@
 #include "sensorsADT.h"
+#define MAX_LEN 64 // reservamos 64 ya que analizando los parametros llegamos a que el maximo son 55 caracaracter rervamos mas por si cambian los id o hay mediciones absurdamente grandes.
+void memory();
+void wrongyear(void);
+int check(char *s);
+int main(int argc, char *argv[]){
+    if( argc < 2 || argc > 5 ) {
+        fprintf(stderr, "ERROR: cantidad de argumentos invalida\n");
+        exit(1);
+    }
+    int min=MIN_YEAR;
+    int max=ACTUAL_YEAR;
+    if(argc==3){
+        if(check(argv[3])){
+            wrongyear();
+        }
+        min=atoi(argv[3]);
+    }
+    else if(argc==4){
+        if( check(argv[3]) || check(argv[4])){
+           wrongyear();
+        }
+        min=atoi(argv[3]);
+        max=atoi(argv[4]);
+        if(min>max){
+            wrongyear();
+        }
+    }
+    FILE * readings = fopen(argv[1], "r");     // abrimos las mediciones
+    FILE * sensors = fopen(argv[2], "r");       // abrimos el archivo csv de los sensores
+    if ( readings == NULL || sensors == NULL ){ // nos fijamos que tengamos memoria
+        fprintf(stderr, "ERROR: archivos especificados no encontrados\n");
+        exit(1);
+    }
+    sensorsADT data = newSensorsADT(min, max);         // creamos un nuevo ADT y checkeamos de tener memoria
+    if(data==NULL){
+        memory();
+    }
+    char * currentLine=malloc(MAX_LEN); 
+    fgets(currentLine, MAX_LEN, sensors); // salteo el encabezado
+    while(fgets(currentLine, MAX_LEN, sensors)){ //recorro todas las lineas 
+        if(addSensor(data, currentLine)){
+            memory();
+        }
+    }
+    fgets(currentLine, MAX_LEN, readings); // salteo el encabezado
+    while(fgets(currentLine, MAX_LEN, readings)){
+        if(addReading(data, currentLine, min, max)){
+            memory();
+        }
+    }
+    fclose(readings);
+    fclose(sensors);
 
-typedef struct id{
-    size_t total; // suma total de todas las mediciones del sensor
-    char * name; // nombre del sensor
-    char status; //estado del sensor "A" o "R"
-    size_t cant_max; // cantidad maxima para comparar 
-    unsigned int hour;  // hora con max cant
-    unsigned int day; //dia con max cant
-    unsigned int month; //mes con max cant
-    unsigned int year; //año con max cant
-}id;
-
-
-typedef struct day{
-    char * name; // nombre del dia 
-    size_t day;  // suma total de las 0 a las 6 h
-    size_t night; // suma total de las 18 a 0 h
-    size_t total; // suma total de las 24h 
-}day;
-
-typedef struct sensorsCDT{
-    day days[DAYS]; // vector de los dias de la semana.
-    id ids[IDS]; // vector de todos los sensores
-    size_t years[ACTUAL_YEAR-MIN_YEAR]; // suma total por año
-    size_t minYear; 
-    size_t maxYear;
-}sensorsCDT;
-
-
-sensorsADT newSensorsADT(size_t minYear, size_t maxYear){
-    sensorsADT new=calloc(1, sizeof(sensorsCDT));
-    new->minYear=minYear;
-    new->maxYear=maxYear;
-    return new;
+    FILE * query1= fopen("query1.csv", "wt"); // creamos los archivos donde vamos a guardar lo que pide cada query
+    FILE * query2= fopen("query2.csv", "wt"); 
+    FILE * query3= fopen("query3.csv", "wt");
+    FILE * query4= fopen("query4.csv", "wt");
+    if(query1==NULL || query2==NULL || query3==NULL || query4==NULL){
+        fprintf(stderr, "ERROR: Fallo en la creacion/escritura de archivos\n");
+        exit(1);
+    }
+    fputs("sensor;counts\n", query1); // pongo el encabezado de todos los queries 
+    fputs("year;counts\n", query2);
+    fputs("day;day_counts;night_counts;total_counts\n", query3);
+    fputs("sensor;max_counts;hour;date\n", query4);
+    int i=0;
+    // orderQ1(data);
+    while(i<IDS){
+        fprintf(query1,"%s;%ld\n", getName(data, i), getTotal(data, i)); //getName, getTotal
+        i++;
+    }
+    for(i=ACTUAL_YEAR-MIN_YEAR; i>=0; i--){
+        fprintf(query2, "%d;%ld\n", i+MIN_YEAR, getDataByYear(data, i)); //getDataByYear
+    }
+    for(i=0; i<DAYS; i++){
+        fprintf(query3, "%s;%ld;%ld;%ld\n", getDayName(data, i), getDataDay(data, i), getDataNight(data, i), getDataTotal(data, i)); //getDayName, getDataDay, getDataNight, getDataTotal 
+    }
+    // orderQ4(data);
+    for(i=min-MIN_YEAR; i<max-MIN_YEAR; i++){
+        fprintf(query4, "%s;%ld;%d;%d/%d/%d\n",getName(data, i), getMax(data, i), getHour(data, i), getDay(data, i), getMonth(data, i), getYear(data, i)); // getMax, getHour, getDay, getMonth, getYear
+    }
+    free(currentLine);
+    freeALL(data);
+    fclose(query1);
+    fclose(query2);
+    fclose(query3);
+    fclose(query4);
+    return 0;
 }
 
-static int compareTotalPeople(id * sens1, id * sens2); // devuelve 1 si el id1 tiene que ir antes cuando lo ordenas o -1 si deberia ir el id2 antes
-static int compareMax(id * sens1, id * sensMax); // compara la siguiente cantidad de personas en una hora dada del sensor con el record maximo. Si lo supera devuelve -1, si no devuelve 1
-
-void newyear(sensorsADT data, int year, int hCounts){
-    data->years[year-MIN_YEAR]+=hCounts;
+void memory(){
+    fprintf(stderr, "ERROR: memoria insuficiente\n");
+    exit(1);
+}
+void wrongyear(void){
+    fprintf(stderr, "ERROR: Paramtros de años invalidos\n");
+    exit(1);
 }
 
-int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay){
-    day * aux = &data->days[weekDay];
-    if(aux->name==NULL){
-        aux->name = strcpy(malloc(strlen(nameday) + 1), nameday);
-    }
-    if (aux->name == NULL){
-        return 1; //no pudo guardar en memoria, 1 para que tire error
-    }
-    
-    aux->total += hCounts; //siempre sumo al total
-    if( time >= 0 && time <= 6){ //sumo si entra en el rango horario del daycount
-        aux->day += hCounts;
-    } else if( time>=18 && time<24){ //idem pero con nightcount
-        aux->night += hCounts;
+int check (char * s){
+    for(int i=0; s[i]; i++){
+         if(!isdigit(s[i])){
+            return 1;
+        }
     }
     return 0;
 }
 
-int newReading(sensorsADT data, int year, int numMonth, int monthDay, char * nameday, int weekDay, int id, int time, int hCounts, int * status){
-        newID(data, id, hCounts, year, numMonth, monthDay, time); 
-        if(*status){
-            if(newDay(data, nameday, time, hCounts, weekDay)){
-                return 1;
-            }
-            newyear(data, year, hCounts);
-        }
-        return 0;
-}
-
-void newID(sensorsADT data, int num_id, int hCounts, int year, int month, int monthDay, int time){
-     id aux=data->ids[num_id-1];
-     aux.total += hCounts;
-     
-     if(year >= data->minYear && year <= data->maxYear){
-        if(aux.cant_max <= hCounts){
-            aux.cant_max = hCounts;
-            aux.year = year;
-            aux.month = month;
-            aux.day = monthDay;
-            aux.hour = time;
-        }
-    }
-    
-}
-
-int newSensor(sensorsADT data, size_t id, char * name, char status){
-    data->ids[id-1].name=strcpy(malloc(strlen(name)+1), name);
-    if(data->ids[id-1].name == NULL){
-        return 1;
-    }
-    data->ids[id-1].status=status;
-    return 0;    
-}
-
-static int compareTotalPeople(id * sens1, id * sens2){
-  int resp;
-    if((resp=sens2->total - sens1->total)==0){
-        return strcmp(sens1->name, sens2->name);
-    }
-    return resp;
-}
-
-static int compareMax(id * sens1, id * sens2){
-    int resp;
-    if((resp=sens2->cant_max - sens1->cant_max)==0){
-        return strcmp(sens1->name, sens2->name);
-    }
-    return resp;
-}
-
-void orderQ1(sensorsADT data){
-    qsort(data->ids, IDS, sizeof(id), (int (*) (const void *, const void *))compareTotalPeople);
-} 
-void orderQ4(sensorsADT data){
-    qsort(data->ids, IDS, sizeof(id), (int (*) (const void *, const void *))compareMax);
-}
-
-void freeALL(sensorsADT data){
-    for(int i=0; i<IDS; i++){
-        free(data->ids[i].name);
-    }
-    for(int i=0; i<DAYS; i++){
-         free(data->days[i].name);
-    }
-    free(data);
-}
-
- int isActive(sensorsADT data, int id){
-    if(data->ids[id-1].status == 'A'){
-        return 1;
-    }
-    return 0;
-}
-
-char * getName(sensorsADT data, int idx){
-    return data->ids[idx].name;
-}
-size_t getTotal(sensorsADT data, int idx){
-    return data->ids[idx].total;
-}
-
-size_t getDataByYear(sensorsADT data, int idx){
-    return data->years[idx];
-}
-
-char * getDayName(sensorsADT data, int idx){
-    return data->days[idx].name;
-} 
-
-size_t getDataDay(sensorsADT data, int idx){
-    return data->days[idx].day;
-}
-
-size_t getDataNight(sensorsADT data, int idx){
-    return data->days[idx].night;
-}
-
-size_t getDataTotal(sensorsADT data, int idx){
-    return data->days[idx].total;
-} 
-
-size_t getMax(sensorsADT data, int idx){
-    return data->ids[idx].cant_max;
-}
-
-int getHour(sensorsADT data, int idx){
-   return data->ids[idx].hour;
-}
-
-int getDay(sensorsADT data, int idx){
-    return data->ids[idx].day;
-}
-
-int getMonth(sensorsADT data, int idx){
-    return data->ids[idx].month;
-}
-
-int getYear(sensorsADT data, int idx){
-    return data->ids[idx].year;
-}
