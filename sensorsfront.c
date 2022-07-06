@@ -10,13 +10,13 @@ int main(int argc, char *argv[]){
     }
     int min=MIN_YEAR;
     int max=ACTUAL_YEAR;
-    if(argc==3){
+    if(argc==4){
         if(check(argv[3])){
             wrongyear();
         }
         min=atoi(argv[3]);
     }
-    else if(argc==4){
+    else if(argc==5){
         if( check(argv[3]) || check(argv[4])){
            wrongyear();
         }
@@ -25,6 +25,12 @@ int main(int argc, char *argv[]){
         if(min>max){
             wrongyear();
         }
+    }
+    if(min<MIN_YEAR){
+        min=MIN_YEAR;
+    }
+    if(max>ACTUAL_YEAR){
+        max=ACTUAL_YEAR;
     }
     FILE * readings = fopen(argv[1], "r");     // abrimos las mediciones
     FILE * sensors = fopen(argv[2], "r");       // abrimos el archivo csv de los sensores
