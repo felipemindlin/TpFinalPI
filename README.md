@@ -24,6 +24,11 @@ argumentos que se correspondan:
 		Ejemplos de argumentos válidos: "2003 2022", "2009 2015", etc.
 		Ejemplos de argumentos inválidos: "dos mil 2039", "2022 2010", etc.
 		
+Para su correcto uso, se deben modificar:
+	- El valor de IDS, insertando la cantidad total de sensores.
+	- El valor de ACTUAL_YEAR, insertando el año actual.
+	- El valor de MIN_YEAR, insertando el menor año de mediciones.
+
 El ejecutable está configurado para que los archivos se encuentren con el formato siguiente:
 
 	- readings.csv :
