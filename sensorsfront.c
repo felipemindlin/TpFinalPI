@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "ERROR: archivos especificados no encontrados\n");
         exit(1);
     }
-    sensorsADT data = newSensorsADT(min, max);         // creamos un nuevo ADT y checkeamos de tener memoria
+    sensorsADT data = newSensorsADT();         // creamos un nuevo ADT y checkeamos de tener memoria
     if(data==NULL){
         memory();
     }

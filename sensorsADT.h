@@ -23,10 +23,9 @@ void orderQ1(sensorsADT data);
 void orderQ4(sensorsADT data); 
 
 /*
-* Crea un TAD nuevo vacío. Recibe el año míninimo y máximo de mediciones a tener en cuenta. 
-* (Útiles para el query 3)
+* Crea un TAD nuevo vacío.
 */
-sensorsADT newSensorsADT(size_t minYear, size_t maxYear);
+sensorsADT newSensorsADT(void);
 
 /*
 * Recibe el TAD, el año de mediciones y la medición particular.

@@ -28,9 +28,8 @@ typedef struct sensorsCDT{
 }sensorsCDT;
 
 
-sensorsADT newSensorsADT(size_t minYear, size_t maxYear){
-    sensorsADT new=calloc(1, sizeof(sensorsCDT));
-    return new;
+sensorsADT newSensorsADT(){
+   return calloc(1, sizeof(sensorsCDT));
 }
 
 static int compareTotalPeople(id * sens1, id * sens2); // devuelve 1 si el id1 tiene que ir antes cuando lo ordenas o -1 si deberia ir el id2 antes
