@@ -1,3 +1,6 @@
+
+Pasos previos a la ejecución: modificar en archivo "sensorsADT.h" las constantes simbólicas IDS, MIN_YEAR, ACTUAL_YEAR indicando la cantidad de sensores, el menor año de mediciones y el año actual, respectivamente.
+
 Para generar el ejecutable, desde la terminal ejecutar el comando "make all" en el directorio actual:
 
 	- En caso de querer debuggear el programa, correr "make debug"
