@@ -49,7 +49,7 @@ int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay){
     }
     
     aux->total += hCounts; //siempre sumo al total
-    if( (time>=18 && time<24) || (time >= 0 && time <= 6)){ //sumo si entra en el rango horario del daycount
+    if( (time>=18 && time<24) || (time >= 0 && time < 6)){ //sumo si entra en el rango horario del daycount
         aux->night += hCounts;
     } else { //idem pero con nightcount
         aux->day += hCounts;
