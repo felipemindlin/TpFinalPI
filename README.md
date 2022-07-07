@@ -22,8 +22,8 @@ argumentos que se correspondan:
 	Argumentos opcionales: Si se desea especificar un intervalo de años para el Query 4.
 							Por defecto, si se dejan vacíos, el query 4 analizará todos los datos.
 	
-		- Intervalo de años en formato numérico y siendo el primero menor o igual que el segundo.
-		Ejemplos de argumentos válidos: "2003 2022", "2009 2015", etc.
+		- Intervalo de años en formato numérico y siendo el primero menor o igual que el segundo, y sin comillas.
+		Ejemplos de argumentos válidos: "2003 2022", "2009 2015", "2013 2013", etc.
 		Ejemplos de argumentos inválidos: "dos mil 2039", "2022 2010", etc.
 		
 El ejecutable está configurado para que los archivos se encuentren con el formato siguiente:
