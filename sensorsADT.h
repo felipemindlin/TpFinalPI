@@ -5,11 +5,14 @@
 #include <assert.h>
 #include <errno.h>
 
-#define DELIM ";"
-#define MIN_YEAR 2009
-#define IDS 86
-#define DAYS 7
-#define ACTUAL_YEAR 2022
+#define DELIM ";" //delimitador entre los datos
+#define MIN_YEAR 2009 // primer año de medicion (a modificar por el usuario)
+#define IDS 86 // cantidad de IDS a modificar por el usuario
+#define DAYS 7 //cantidad de dias
+#define ACTUAL_YEAR 2022 //año actual. (a modificar por el usuario)
+#define YEARS ACTUAL_YEAR-MIN_YEAR+1
+#define MAX_LEN 64 // reservamos 64 ya que analizando los datos 
+//llegamos a que el maximo son 55 caracaracter rervamos mas por si cambian los id o hay mediciones absurdamente grandes.
 typedef struct sensorsCDT * sensorsADT;
 
 /*
