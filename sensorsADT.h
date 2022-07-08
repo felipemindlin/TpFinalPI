@@ -5,11 +5,14 @@
 #include <assert.h>
 #include <errno.h>
 
-#define DELIM ";"
-#define MIN_YEAR 2009
-#define IDS 86
-#define DAYS 7
-#define ACTUAL_YEAR 2022
+#define DELIM ";" //delimitador entre los datos
+#define MIN_YEAR 2009 // primer año de medicion (a modificar por el usuario)
+#define IDS 86 // cantidad de IDS a modificar por el usuario
+#define DAYS 7 //cantidad de dias
+#define ACTUAL_YEAR 2022 //año actual. (a modificar por el usuario)
+#define YEARS ACTUAL_YEAR-MIN_YEAR+1
+#define MAX_LEN 64 // reservamos 64 ya que analizando los datos 
+//llegamos a que el maximo son 55 caracaracter rervamos mas por si cambian los id o hay mediciones absurdamente grandes.
 typedef struct sensorsCDT * sensorsADT;
 
 /*
@@ -23,10 +26,9 @@ void orderQ1(sensorsADT data);
 void orderQ4(sensorsADT data); 
 
 /*
-* Crea un TAD nuevo vacío. Recibe el año míninimo y máximo de mediciones a tener en cuenta. 
-* (Útiles para el query 3)
+* Crea un TAD nuevo vacío.
 */
-sensorsADT newSensorsADT(size_t minYear, size_t maxYear);
+sensorsADT newSensorsADT(void);
 
 /*
 * Recibe el TAD, el año de mediciones y la medición particular.
@@ -50,7 +52,7 @@ int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay);
 * Si el flag está prendido, llama a newDay y si pudo guardar en memoria, llama a newyear, si no retorna 1.
 * En caso de poder guardar todo, retorna 0, indicando que no hubo problemas en memoria.
 */
-int newReading(sensorsADT data, int year, int numMonth, int monthDay, char * nameday, int weekDay, int id, int time, int hCounts, int * status);
+int newReading(sensorsADT data, int year, int min, int max, int numMonth, int monthDay, char * nameday, int weekDay, int id, int time, int hCounts, int * status);
 
 /*
 * Recibe el TAD, un id de sensor, una medición, un año, un mes, un día del mes y una hora.
@@ -58,7 +60,7 @@ int newReading(sensorsADT data, int year, int numMonth, int monthDay, char * nam
 * Si el año esta dentro del intervalo de año minímo y máximo, agrega datos de fecha en
 * la cantidad maxima de mediciones del sensor.
 */
-void newID(sensorsADT data, int num_id, int hCounts, int year, int month, int monthDay, int time);
+void newID(sensorsADT data, int num_id, int hCounts, int year, int min, int max, int month, int monthDay, int time);
 
 /* 
 * Recibe TAD, id, nombre y estado de sensor.
