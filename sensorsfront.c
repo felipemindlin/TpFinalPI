@@ -9,7 +9,7 @@ static int check(char *s); //chequea que los años sean validos
 static void wrongyear(void); // si check indica que no son validos indica el error y aborta
 
 int main(int argc, char *argv[]){
-    if( argc < 2 || argc > 5 ) { //chequea cantidad de argumentos
+    if( argc < 3 || argc > 5 ) { //chequea cantidad de argumentos
         fprintf(stderr, "ERROR: cantidad de argumentos invalida\n"); //sino es valida lo avisa y aborta
         exit(1);
     }
