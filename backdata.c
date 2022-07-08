@@ -34,8 +34,6 @@ int addReading(sensorsADT data, char * string, int min, int max){
     }
 
     token = strtok(NULL, DELIM); // leo la linea hasta el proximo ;
-    
-    char * nameday = token; //guardamos el nombre del dia
     int weekDay = days(token); // guardamos el dia como numero del 0 al 6 mediante la funcion days
 
     token = strtok(NULL, DELIM); // leo la linea hasta el proximo ;
@@ -49,7 +47,7 @@ int addReading(sensorsADT data, char * string, int min, int max){
     
     int status = isActive(data, id); // me guardo 1 si el sensor esta activo
     // llamo a newReading para que agregue los datos en sus respectivos lugares
-    return newReading(data, year, min, max, month, monthDay, nameday, weekDay, id, time, hCounts, &status);
+    return newReading(data, year, min, max, month, monthDay, weekDay, id, time, hCounts, &status);
     
 }
 

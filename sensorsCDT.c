@@ -27,7 +27,12 @@ typedef struct sensorsCDT{
 
 
 sensorsADT newSensorsADT(){
-   return calloc(1, sizeof(sensorsCDT)); //reservamos memoria para el TAD
+    sensorsADT new = calloc(1, sizeof(sensorsCDT)); //reservamos memoria para el TAD
+    if(setDays(new)){ //si setDays retorna 1, no hay memoria para guardar los dias
+        free(new);      //libera memoria reservada para el TAD y retorna NULL;
+        return NULL;
+    }
+    return new; 
 }
 
 static int compareTotalPeople(id * sens1, id * sens2); // Funcion de comapre para ordenar para el Q1
@@ -37,14 +42,22 @@ void newyear(sensorsADT data, int year, int hCounts){ //suma los count por año
     data->years[year-MIN_YEAR]+=hCounts;
 }
 
-int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay){
+int setDays(sensorsADT data){
+    char *days[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    int i = 0;
+    day * aux = &data->days[i];
+    for(i = 0; i < DAYS; i++){
+        aux = &data->days[i];
+        aux->name = strcpy(malloc(strlen(days[i]) + 1), days[i]);
+        if (aux->name == NULL){
+            return 1; //no pudo guardar en memoria, retorna 1 para que tire error
+            }
+    }
+    return 0;
+}
+
+int newDay(sensorsADT data, int time, int hCounts, int weekDay){
     day * aux = &data->days[weekDay];
-    if(aux->name==NULL){
-        aux->name = strcpy(malloc(strlen(nameday) + 1), nameday);
-    }
-    if (aux->name == NULL){
-        return 1; //no pudo guardar en memoria, retorna 1 para que tire error
-    }
     
     aux->total += hCounts; //siempre sumo al total
     if( (time>=18 && time<24) || (time >= 0 && time < 6)){ //sumo si entra en el rango horario del daycount
@@ -55,10 +68,10 @@ int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay){
     return 0;
 }
 
-int newReading(sensorsADT data, int year, int min, int max, int numMonth, int monthDay, char * nameday, int weekDay, int id, int time, int hCounts, int * status){
+int newReading(sensorsADT data, int year, int min, int max, int numMonth, int monthDay, int weekDay, int id, int time, int hCounts, int * status){
         if(*status){ // si esta activo agrego sino no
             newID(data, id, hCounts, year, min, max, numMonth, monthDay, time); //agregamos los datos en la struct id
-            if(newDay(data, nameday, time, hCounts, weekDay)){ // agregamos los datos en la estructura day
+            if(newDay(data, time, hCounts, weekDay)){ // agregamos los datos en la estructura day
                 return 1; // sino pudo reservar retrono 1 
             }
             newyear(data, year, hCounts); // suma al total por año

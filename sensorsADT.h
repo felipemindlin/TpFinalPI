@@ -31,6 +31,11 @@ void orderQ4(sensorsADT data);
 sensorsADT newSensorsADT(void);
 
 /*
+* Nombra los dias en el vector days. Retorna 1 si no pudo reservar memoria, si no 0.
+*/
+int setDays(sensorsADT data);
+
+/*
 * Recibe el TAD, el año de mediciones y la medición particular.
 * Suma en el vector years al total de mediciones por año la medición recibida.
 */
@@ -40,19 +45,18 @@ void newyear(sensorsADT data, int year, int hCounts);
 * Recibe el TAD, nombre del día, hora y número de día de medición, y
 * retorna 1 si no pudo guardar en memoria, 0 en caso contrario.
 * Si guarda en memoria, suma al total del día.
-* También si time está entre 0 y 6 (horas): suma en day en vector days
-* Si time está entre 18 y 23 (horas): suma en night en vector days
+* También si time está entre 6 y 18 : suma en day en vector days
+* De lo contrario: suma en night en vector days
 */
-int newDay(sensorsADT data, char * nameday, int time, int hCounts, int weekDay);
+int newDay(sensorsADT data, int time, int hCounts, int weekDay);
 
 /*
 * Recibe el TAD, año, número y día de mes, nombre y numero del día de semana,
 * un id de sensor, una hora, una medición y un flag indicando el estado del sensor.
-* Llama a newID.
 * Si el flag está prendido, llama a newDay y si pudo guardar en memoria, llama a newyear, si no retorna 1.
 * En caso de poder guardar todo, retorna 0, indicando que no hubo problemas en memoria.
 */
-int newReading(sensorsADT data, int year, int min, int max, int numMonth, int monthDay, char * nameday, int weekDay, int id, int time, int hCounts, int * status);
+int newReading(sensorsADT data, int year, int min, int max, int numMonth, int monthDay, int weekDay, int id, int time, int hCounts, int * status);
 
 /*
 * Recibe el TAD, un id de sensor, una medición, un año, un mes, un día del mes y una hora.
