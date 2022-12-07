@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
     if(data==NULL){
         memory();
     }
-    char * currentLine=malloc(MAX_LEN); 
+    char * currentLine[MAX_LEN]; 
     fgets(currentLine, MAX_LEN, sensors); // salteo el encabezado
     while(fgets(currentLine, MAX_LEN, sensors)){ //recorro todas las lineas 
         if(addSensor(data, currentLine)){ //agrego los sensores del archivo sensors.csv
@@ -105,7 +105,6 @@ int main(int argc, char *argv[]){
     }
     //-------------------------------------------------------------------------------------------
     //liberamos y cerramos archivos
-    free(currentLine);
     freeALL(data);
     fclose(query1);
     fclose(query2);
